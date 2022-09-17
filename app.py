@@ -8,7 +8,7 @@ set_dpi_awarness()
 root = tk.Tk()
 root.title("Distance convertor")
 
-font.nametofont("TkDefaultFont").configure(size = 15)
+font.nametofont("TkDefaultFont").configure(size=15)
 
 root.columnconfigure(0, weight=1)
 
@@ -37,7 +37,7 @@ def calculate_feet(*args):
 
 # Widget----
 metres_label = ttk.Label(main, text="Metres:")
-metres_input = ttk.Entry(main, width=10, textvariable=mtr_value, font=("Segoe UI" , 15))
+metres_input = ttk.Entry(main, width=10, textvariable=mtr_value, font=("Segoe UI", 15))
 
 feet_label = ttk.Label(main, text="Feet: ")
 feet_output = ttk.Label(main, textvariable=feet_value)
@@ -46,14 +46,18 @@ calculate_button = ttk.Button(main, text="Calculate", command=calculate_feet)
 # ---
 
 # -- Layout
-metres_label.grid(row=0, column=0, sticky="W", padx=15, pady=15)
-metres_input.grid(row=0, column=1, sticky="EW", padx=15, pady=15)
+metres_label.grid(row=0, column=0, sticky="W")
+metres_input.grid(row=0, column=1, sticky="EW")
 
-feet_label.grid(row=1, column=0, sticky="W", padx=15, pady=15)
-feet_output.grid(row=1, column=1, sticky="EW", padx=15, pady=15)
+feet_label.grid(row=1, column=0, sticky="W")
+feet_output.grid(row=1, column=1, sticky="EW")
 
-calculate_button.grid(row=2, column=0, columnspan=2, sticky="EW", padx=5, pady=5)
+calculate_button.grid(row=2, column=0, columnspan=2, sticky="EW")
 # ---
+
+# Performing the padx and pady operation on all the children of main window
+for child in main.winfo_children():
+    child.grid_configure(padx=15, pady=15)
 
 # Key Bindings can be done on the root, metres input
 root.bind("<Return>", calculate_feet)  # Enter key
