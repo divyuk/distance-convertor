@@ -11,8 +11,12 @@ class DistanceConverter(tk.Tk):
         super().__init__(*args, **kwargs)
 
         self.title("Distance Convertor")
-        frame = FeetToMetres(self, padding=(60, 30))
-        frame.grid()
+
+        container = ttk.Frame(self)
+        container.grid(padx=60, pady=30, sticky="EW")
+
+        frame = FeetToMetres(container)
+        frame.grid(row=0,column=0,sticky="NSEW")
 
         # Key Bindings can be done on the root, metres input
         self.bind("<Return>", frame.calculate)  # Enter key
