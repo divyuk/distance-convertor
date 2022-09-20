@@ -11,12 +11,12 @@ class DistanceConverter(tk.Tk):
         super().__init__(*args, **kwargs)
 
         self.title("Distance Convertor")
-        frame = MetresToFeet(self, padding=(60, 30))
+        frame = FeetToMetres(self, padding=(60, 30))
         frame.grid()
 
         # Key Bindings can be done on the root, metres input
-        self.bind("<Return>", frame.calculate_feet)  # Enter key
-        self.bind("<KP_Enter>", frame.calculate_feet)  # Key pad enter key
+        self.bind("<Return>", frame.calculate)  # Enter key
+        self.bind("<KP_Enter>", frame.calculate)  # Key pad enter key
 
 
 class MetresToFeet(ttk.Frame):
@@ -34,7 +34,7 @@ class MetresToFeet(ttk.Frame):
         feet_label = ttk.Label(self, text="Feet: ")
         feet_output = ttk.Label(self, textvariable=self.feet_value)
 
-        calculate_button = ttk.Button(self, text="Calculate", command=self.calculate_feet)
+        calculate_button = ttk.Button(self, text="Calculate", command=self.calculate)
         # ---
         # -- Layout
         metres_label.grid(row=0, column=0, sticky="W")
@@ -51,7 +51,7 @@ class MetresToFeet(ttk.Frame):
             child.grid_configure(padx=15, pady=15)
 
     # Function to fire up when event happens
-    def calculate_feet(self, *args):
+    def calculate(self, *args):
         """
         If the button is clicked before typing anything the value error will be thrown
         :param args:
@@ -61,6 +61,52 @@ class MetresToFeet(ttk.Frame):
             metres = float(self.mtr_value.get())
             feet = metres * 3.28084
             self.feet_value.set(f"{feet : .3f}")
+        except ValueError:
+            pass
+
+
+class FeetToMetres(ttk.Frame):
+    def __init__(self, container, **kwargs):
+        super().__init__(container, **kwargs)
+
+        # the variable to hold the calculation
+        self.feet_value = tk.StringVar()
+        self.mtr_value = tk.StringVar(value="Metre shown here")
+
+        # Widget----
+        feet_label = ttk.Label(self, text="Feet:")
+        feet_input = ttk.Entry(self, width=10, textvariable=self.feet_value, font=("Segoe UI", 15))
+
+        metre_label = ttk.Label(self, text="Metre: ")
+        metre_output = ttk.Label(self, textvariable=self.mtr_value)
+
+        calculate_button = ttk.Button(self, text="Calculate", command=self.calculate)
+        # ---
+        # -- Layout
+        feet_label.grid(row=0, column=0, sticky="W")
+        feet_input.grid(row=0, column=1, sticky="EW")
+
+        metre_label.grid(row=1, column=0, sticky="W")
+        metre_output.grid(row=1, column=1, sticky="EW")
+
+        calculate_button.grid(row=2, column=0, columnspan=2, sticky="EW")
+        # ---
+
+        # Performing the padx and pady operation on all the children of main window
+        for child in self.winfo_children():
+            child.grid_configure(padx=15, pady=15)
+
+    # Function to fire up when event happens
+    def calculate(self, *args):
+        """
+        If the button is clicked before typing anything the value error will be thrown
+        :param args:
+        :return:
+        """
+        try:
+            feet = float(self.feet_value.get())
+            metres = feet / 3.28084
+            self.mtr_value.set(f"{metres : .3f}")
         except ValueError:
             pass
 
